@@ -1,0 +1,207 @@
+body {
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(-176deg, #90a7d0 0%, #b8c9e3 45%, #263b0e calc(45% + 5px), #59723b 55%, #79b362 100%);
+}
+
+label, input, button {
+    font-size: 1.2rem;
+}
+
+button {
+    width: fit-content;
+    height: fit-content;
+}
+
+.title-bar-controls button[aria-label=Maximize] {
+    display: none;
+}
+
+input[type=email], input[type=password], input[type=text], select {
+    height: 2rem;
+    font-size: 1.2rem;
+}
+
+input:read-only,
+textarea:read-only {
+    background-color: #ededed;
+}
+
+textarea {
+    border: 1px solid #7f9db9;
+    font-size: 1.2rem;
+}
+
+option {
+    line-height: 1.2rem;
+    font-size: 1rem;
+}
+
+.fs-12 {
+    font-size: 1.2rem;
+}
+
+.fs-13 {
+    font-size: 1.3rem;
+}
+
+div[role=tabpanel] {
+    max-width: 100%;
+}
+
+.container {
+    width: 40vw;
+    height: 60vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.tabs {
+    height: 100%;
+    display: grid;
+    grid-template-rows: 25px auto;
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+}
+
+.navigation-mobile {
+    display: none;
+}
+
+select.navigation-mobile option {
+    font-size: 1.2rem;
+}
+
+.process-word-block,
+.process-translation-block {
+    max-width: 100%;
+    font-size: 1.5rem;
+    line-height: 1.2;
+    border: 1px solid #7f9db9;
+    margin: 1rem 0;
+    padding: 0 0.5rem;
+    text-align: center;
+}
+
+.process-word-block p,
+.process-translation-block p {
+    margin: .5rem 0;
+}
+
+.process-translation-block {
+    position: relative;
+}
+
+.process-translation-cover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.button-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 150px);
+    gap: 15px;
+    justify-content: space-evenly;
+}
+
+.process-button {
+    align-self: center;
+    height: 2rem;
+}
+
+.process-button button {
+    width: 100%;
+    height: 2rem;
+}
+
+.p-1 {
+    padding: 0.5rem;
+}
+.p-2 {
+    padding: 1rem;
+}
+.m-1 {
+    margin: 0.5rem;
+}
+
+.mt-1 {
+    margin-top: 0.5rem;
+}
+
+.mt-2 {
+    margin-top: 1rem;
+}
+
+.mt-3 {
+    margin-top: 3rem;
+}
+
+.mb-1 {
+    margin-bottom: 0.5rem;
+}
+
+.mb-2 {
+    margin-bottom: 1rem;
+}
+
+.mb-3 {
+    margin-bottom: 3rem;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.opacity-0 {
+    opacity: 0;
+}
+
+.opacity-100 {
+    opacity: 100;
+}
+
+@media (max-width: 1600px) {
+    .container {
+        width: 50vw;
+        height: 70vh;
+    }
+}
+@media (max-width: 1366px) {
+    .container {
+        width: 60vw;
+        height: 80vh;
+    }
+}
+@media (max-width: 1024px) {
+    .container {
+        width: 70vw;
+        height: 80vh;
+    }
+}
+@media (max-width: 768px) {
+    .container {
+        width: 90vw;
+        height: 90vh;
+    }
+    menu[role=tablist] {
+        display: none;
+    }
+    .navigation-mobile {
+        display: block;
+        width: max-content;
+    }
+    .tabs {
+        row-gap: 1rem;
+    }
+}
