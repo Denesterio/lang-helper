@@ -1,4 +1,6 @@
 <script setup>
+    import { ref } from 'vue';
+
     defineProps({
         id: {
             type: String,
@@ -20,6 +22,10 @@
 
     const emit = defineEmits(['input']);
 
+    const inputRef = ref(null);
+
+    defineExpose({ inputRef });
+
     const model = defineModel();
 
     function update(event) {
@@ -31,6 +37,6 @@
 <template>
     <div class="field-row-stacked">
         <label :for="id">{{ label }}</label>
-        <input :value="model" :id="id" :type="type" :readonly="readonly" @input="update" />
+        <input ref="inputRef" :value="model" :id="id" :type="type" :readonly="readonly" @input="update" />
     </div>
 </template>

@@ -20,6 +20,8 @@
     });
 
     const translationInput = useTemplateRef('translation-input');
+    const wordInput = useTemplateRef('word-input');
+    const translationAdd = useTemplateRef('translation-add');
 
     const wordDefault = {
         word: null,
@@ -111,6 +113,32 @@
             );
         }
     };
+
+    function switchInput(ref, event) {
+        switch (ref) {
+            case 'word-input':
+                if (event.shiftKey) {
+                    translationAdd.value.focus();
+                } else {
+                    translationInput.value.inputRef.focus();
+                }
+                break;
+            case 'translation-input':
+                if (event.shiftKey) {
+                    wordInput.value.inputRef.focus();
+                } else {
+                    translationAdd.value.focus();
+                }
+                break;
+            case 'translation-add':
+                if (event.shiftKey) {
+                    translationInput.value.inputRef.focus();
+                } else {
+                    wordInput.value.inputRef.focus();
+                }
+                break;
+        }
+    };
 </script>
 
 <template>
@@ -125,11 +153,13 @@
         />
         <v-input-text
             v-model="currentWord.word"
+            ref="word-input"
             id="word"
             label="Слово"
             class="mb-2 input-dropdown"
             :readonly="currentDictionaryId == null"
             @input="checkCurrentWord"
+            @keydown.tab.prevent="switchInput('word-input', $event)"
         />
         <v-input-textarea
             v-model="currentWord.translation_text"
@@ -139,10 +169,13 @@
             class="mb-2"
             :readonly="currentDictionaryId == null"
             @input="transliterateInput"
+            @keydown.tab.prevent="switchInput('translation-input', $event)"
         />
         <button
             v-if="!currentWord?.id"
+            ref="translation-add"
             @click.prevent="saveWord"
+            @keydown.tab.prevent="switchInput('translation-add', $event)"
         >
             Добавить
         </button>
