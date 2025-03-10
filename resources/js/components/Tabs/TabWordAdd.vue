@@ -86,6 +86,7 @@
 
     async function saveWord() {
         currentWord.value.dictionary_id = currentDictionaryId.value;
+        wordInput.value.inputRef.focus();
         const response = await storeWord(currentWord.value);
         if (response.data.id) {
             addWordToWords(words.value, response.data);
