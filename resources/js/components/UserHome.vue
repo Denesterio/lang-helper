@@ -47,8 +47,8 @@
 </script>
 
 <template>
-    <div class="window container" @switch-tab="switchTab">
-        <the-title-bar :tabs="tabs">
+    <div class="window container">
+        <the-title-bar :tabs="tabs" @switch-tab="switchTab">
             <template v-slot:text>Lang-Helper</template>
             <template v-slot:controls>
                 <v-button-close @click.native="logout"></v-button-close>
