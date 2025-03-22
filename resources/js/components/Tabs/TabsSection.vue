@@ -1,5 +1,4 @@
 <script setup>
-    import VInputSelect from '../Forms/VInputSelect.vue';
     import { toRefs } from 'vue';
 
     const props = defineProps({
@@ -34,13 +33,6 @@
                     {{ tab.label }}
                 </button>
             </menu>
-            <v-input-select
-                :value="currentTab"
-                :options="tabs"
-                id="navigation-mobile"
-                class="navigation-mobile"
-                @input="switchTab"
-            ></v-input-select>
         </div>
         <slot name="content"></slot>
     </section>

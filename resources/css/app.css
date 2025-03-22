@@ -18,6 +18,10 @@ button {
     height: fit-content;
 }
 
+.title-bar-mobile {
+    display: none;
+}
+
 .title-bar-controls button[aria-label=Maximize] {
     display: none;
 }
@@ -70,14 +74,6 @@ div[role=tabpanel] {
 .content {
     flex: 1;
     padding: 20px;
-}
-
-.navigation-mobile {
-    display: none;
-}
-
-select.navigation-mobile option {
-    font-size: 1.2rem;
 }
 
 .process-word-block,
@@ -193,15 +189,14 @@ select.navigation-mobile option {
     .container {
         width: 90vw;
         height: 90vh;
+        margin-top: 2rem;
+        padding-top: .5rem;
     }
     menu[role=tablist] {
         display: none;
     }
-    .navigation-mobile {
-        display: block;
-        width: max-content;
-    }
-    .tabs {
-        row-gap: 1rem;
+    .button-container {
+        grid-template-columns: repeat(auto-fill, 250px);
+        gap: 10px;
     }
 }

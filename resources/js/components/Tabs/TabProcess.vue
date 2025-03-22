@@ -4,6 +4,7 @@
     import { computed, onMounted, onUnmounted, ref } from 'vue';
     import { storeWord, storeTranslation, destroyWord, destroyTranslation } from '../../api/word.js';
     import { getButtons, getProcessWords } from '../../api/process.js';
+    import { isMobile } from '../../utils.js';
 
     const props = defineProps({
         dictionaryOptions: {
@@ -12,6 +13,8 @@
             default: () => [],
         },
     });
+
+    const isMobileAgent = isMobile();
 
     const mode = ref('stopped');
     const buttonValues = ref([]);
@@ -163,12 +166,12 @@
             <div class="button-container">
                 <div class="process-button">
                     <button @click.prevent="next(false)">
-                        Не запомнил (1)
+                        {{ 'Не запомнил' + (isMobileAgent ? '' : ' (1)') }}
                     </button>
                 </div>
                 <div v-for="(button, index) in buttonValues" :key="button.value" class="process-button">
                     <button @click.prevent="saveWord(button.value)">
-                        {{ `${button.name} (${index + 2})` }}
+                        {{ button.name + (isMobileAgent ? '' : ` (${index + 2})`) }}
                     </button>
                 </div>
                 <div class="process-button">

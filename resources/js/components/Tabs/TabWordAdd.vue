@@ -5,6 +5,7 @@
     import { useTemplateRef, nextTick, ref } from 'vue';
     import { getWords, storeWord, destroyWord  } from '../../api/word.js';
     import createTransliterator from '../../createTransliterator.js';
+    import { isMobile } from '../../utils.js';
 
     const props = defineProps({
         dictionaryOptions: {
@@ -18,6 +19,8 @@
             default: () => [],
         },
     });
+
+    const isMobileAgent = isMobile();
 
     const translationInput = useTemplateRef('translation-input');
     const wordInput = useTemplateRef('word-input');
@@ -108,10 +111,16 @@
         currentDictionaryId.value = props.dictionaryOptions.find((item) => item.id === Number(id))?.id;
         if (currentDictionaryId.value) {
             await getWordOptions();
-            transliterate = createTransliterator(
-                currentDictionary.value.language_from.slug,
-                currentDictionary.value.language_to.slug
-            );
+            if (isMobileAgent) {
+                transliterate = createTransliterator(
+                    currentDictionary.value.language_from.slug,
+                    currentDictionary.value.language_to.slug
+                );
+            } else {
+                transliterate = function (value) {
+                    return value;
+                };
+            }
         }
     };
 
