@@ -33,6 +33,7 @@
                     {{ tab.label }}
                 </button>
             </menu>
+            <label>{{ tabs.find((item) => item.id === currentTab).label }}</label>
         </div>
         <slot name="content"></slot>
     </section>

@@ -18,7 +18,7 @@
 
 <template>
     <div class="window container">
-        <the-title-bar :tabs="tabs" display-mode="desktop" @switch-tab="switchTab">
+        <the-title-bar :tabs="tabs" @switch-tab="switchTab">
             <template v-slot:text>Lang-Helper</template>
         </the-title-bar>
         <tabs-section :tabs="tabs" :current-tab="currentTab" @switch-tab="switchTab">

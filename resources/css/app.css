@@ -71,6 +71,10 @@ div[role=tabpanel] {
     grid-template-rows: 25px auto;
 }
 
+.navigation label {
+    visibility: hidden;
+}
+
 .content {
     flex: 1;
     padding: 20px;
@@ -198,5 +202,14 @@ div[role=tabpanel] {
     .button-container {
         grid-template-columns: repeat(auto-fill, 250px);
         gap: 10px;
+    }
+    .navigation {
+        text-align: center;
+        font-size: 1.2rem;
+        font-weight: 700;
+    }
+
+    .navigation label {
+        visibility: visible;
     }
 }
