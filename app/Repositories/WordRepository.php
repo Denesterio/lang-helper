@@ -18,7 +18,7 @@ class WordRepository
      */
     public function index(array $filters): Collection
     {
-        $query = $this->class::with(['translations']);
+        $query = $this->class::query();
         if (!empty(Arr::get($filters, 'id'))) {
             $query = $query->whereIn('id', $filters['id']);
         }
@@ -88,7 +88,7 @@ class WordRepository
     protected function afterSave(array $data, Word|Translation $word): void
     {
         $word->translations()->delete();
-        $dataTranslations = array_map('trim', explode('.', Arr::get($data, 'translation_text')));
+        $dataTranslations = array_values(array_filter(array_map('trim', explode('.', Arr::get($data, 'translation_text')))));
         $newTranslations = [];
         foreach ($dataTranslations as $dataTranslation) {
             $translationModel = $this->translationClass::firstOrCreate(

@@ -1,36 +1,24 @@
-<script setup>
-    import { ref } from 'vue';
+<script setup lang="ts">
+    import { Ref, ref } from 'vue';
 
-    defineProps({
-        id: {
-            type: String,
-            required: true,
-        },
-        label: {
-            type: String,
-            default: "",
-        },
-        type: {
-            type: String,
-            default: "text",
-        },
-        readonly: {
-            type: Boolean,
-            default: false,
-        },
-    });
+    const { id, label = '', readonly = false } = defineProps<{
+        id: string
+        label?: string
+        readonly?: boolean
+    }>();
 
-    const inputRef = ref(null);
+    const inputRef: Ref<HTMLTextAreaElement|null> = ref(null);
 
     defineExpose({ inputRef });
 
-    const emit = defineEmits(['input']);
+    const emit = defineEmits<{
+        input: [value: string|null, event: InputEvent]
+    }>();
 
-    const model = defineModel();
+    const model = defineModel<string>();
 
-    function update(event) {
-        model.value = event.target.value;
-        emit('input', event.target.value, event);
+    function update(event: Event) {
+        emit('input', model.value ?? null, event as InputEvent);
     }
 </script>
 
@@ -38,10 +26,9 @@
     <div class="field-row-stacked">
         <label :for="id">{{ label }}</label>
         <textarea
-            :value="model"
+            v-model="model"
             ref="inputRef"
             :id="id"
-            :type="type"
             :readonly="readonly"
             rows="10"
             @input="update"

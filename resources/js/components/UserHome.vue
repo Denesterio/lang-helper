@@ -1,43 +1,44 @@
-<script setup>
+<script setup lang="ts">
     import TabsSection from './Tabs/TabsSection.vue';
     import TabProcess from './Tabs/TabProcess.vue';
     import TabWordAdd from './Tabs/TabWordAdd.vue';
     import TabDictionaryAdd from './Tabs/TabDictionaryAdd.vue';
     import TheTitleBar from './TheTitleBar.vue';
     import VButtonClose from './Forms/VButtonClose.vue';
-    import { ref } from 'vue';
-    import { onMounted, defineProps } from 'vue';
-    import { logoutUser } from '../api/user.js';
-    import { getDictionaries  } from '../api/dictionary.js';
+    import { ref, onMounted } from 'vue';
+    import type { Ref } from 'vue'
+    import { logoutUser } from '../api/user';
+    import { getDictionaries  } from '../api/dictionary';
+    import type { Dictionary, DictionaryItem, Option } from '../types/types.ts';
+    import type { User } from '../types/user.ts';
 
-    defineProps({
-        user: {
-            type: Object,
-            required: true,
-        },
-    });
+    const props = defineProps<{
+        user: User
+    }>();
 
-    const dictionaryOptions = ref([]);
-    const dictionaries = ref([]);
+    const dictionaryOptions: Ref<Option<number>[]> = ref([]);
+    const dictionaries: Ref<Dictionary[]> = ref([]);
     
     const tabs = [
         { id: 'process', label: 'Тренировка' },
         { id: 'word', label: 'Слова +' },
         { id: 'dictEdit', label: 'Словари +' },
-    ];
-    const currentTab = ref('process');
+    ] as const satisfies readonly Option[];
+
+    type TabId = typeof tabs[number]['id'];
+    const currentTab: Ref<TabId> = ref('process');
 
     onMounted(() => {
         getDictionaryOptions();
     });
 
-    async function getDictionaryOptions() {
+    async function getDictionaryOptions(): Promise<void> {
         const response = await getDictionaries()
         dictionaries.value = response.data;
-        dictionaryOptions.value = response.data.map((dict) => ({ id: dict.id, label: dict.name }));
+        dictionaryOptions.value = response.data.map((dict: DictionaryItem): Option<number> => ({ id: dict.id, label: dict.name }));
     };
 
-    function switchTab(tab) {
+    function switchTab(tab: TabId) {
         currentTab.value = tab;
     };
 

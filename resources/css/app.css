@@ -6,7 +6,44 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: linear-gradient(-176deg, #90a7d0 0%, #b8c9e3 45%, #263b0e calc(45% + 5px), #59723b 55%, #79b362 100%);
+    background: linear-gradient(-176deg, #183db3 0%, #3e7ce2 15%, #85bff5 30%, #b1d8f3 45%, #263b0e calc(45% + 5px), #59723b 55%, #79b362 100%);
+}
+
+/* --- Облака --- */
+.cloud {
+    position: absolute;
+    background: #ffffff;
+    border-radius: 50%;
+    filter: blur(20px);
+    opacity: 0.8;
+}
+
+/* Верхнее растянутое облако */
+.cloud-1 {
+    width: 450px; height: 80px;
+    top: 5%; left: 20%;
+    transform: rotate(-5deg);
+    opacity: 0.5;
+    filter: blur(25px);
+}
+/* Кучевые облака справа */
+.cloud-2 {
+    width: 300px; height: 100px;
+    top: 25%; right: 10%;
+    filter: blur(18px);
+    opacity: 0.85;
+}
+.cloud-3 {
+    width: 200px; height: 60px;
+    top: 35%; right: 30%;
+    filter: blur(15px);
+    opacity: 0.7;
+}
+/* Небольшое облачко слева */
+.cloud-4 {
+    width: 150px; height: 40px;
+    top: 15%; left: 5%;
+    filter: blur(12px);
 }
 
 label, input, button {

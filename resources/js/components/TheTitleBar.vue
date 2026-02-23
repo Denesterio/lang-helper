@@ -1,19 +1,19 @@
-<script setup>
+<script setup lang="ts" generic="T extends Option">
 import { ref } from 'vue';
+import type { Ref } from 'vue';
+import type { Option } from '../types/types.ts';
 
-const menuOpen = ref(false);
+const menuOpen: Ref<boolean> = ref(false);
 
-const props = defineProps({
-    tabs: {
-        type: Array,
-        required: false,
-        default: () => [],
-    },
-});
+const props = defineProps<{
+  tabs: readonly T[],
+}>();
 
-const emit = defineEmits(['switch-tab']);
+const emit = defineEmits<{
+  (e: 'switch-tab', tab: T['id']): void
+}>();
 
-function switchTab (tab) {
+function switchTab (tab: T['id']) {
     emit('switch-tab', tab);
     menuOpen.value = false;
 }

@@ -1,17 +1,18 @@
-<script setup>
+<script setup lang="ts">
 	import VInputText from "../Forms/VInputText.vue";
 	import VInputCheckbox from "../Forms/VInputCheckbox.vue";
-	import { ref } from 'vue';
+	import { ref, Ref } from 'vue';
 	import { registerUser } from "../../api/user";
+	import type { User } from '../../types/user.ts';
 
-	const name = ref(null);
-	const password = ref(null);
-    const passwordConfirmation = ref(null);
-	const remember = ref(false);
+	const name: Ref<string|null> = ref(null);
+	const password: Ref<string|null> = ref(null);
+    const passwordConfirmation: Ref<string|null> = ref(null);
+	const remember: Ref<boolean> = ref(false);
 
-	const emit = defineEmits([
-		'update-user',
-	]);
+	const emit = defineEmits<{
+		'update-user': [User | null],
+	}>();
 
 	function sendUserAuth() {
 		registerUser({

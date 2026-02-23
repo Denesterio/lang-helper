@@ -41,7 +41,7 @@ class DictionaryController extends Controller
         return new DictionaryResource($this->repository->show($id));
     }
 
-    public function SaveDictionaryRequest(Request $request, string $id): DictionaryResource
+    public function update(SaveDictionaryRequest $request, string $id): DictionaryResource
     {
         $data = $request->validated()['model'];
         $dict = $this->repository->update((int)$id, $data);

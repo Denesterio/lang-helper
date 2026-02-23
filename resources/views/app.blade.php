@@ -9,7 +9,7 @@
 
         <!-- Styles / Scripts -->
         @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-            @vite(['resources/js/app.js'])
+            @vite(['resources/js/app.ts'])
         @else
             <style>
             </style>
@@ -19,6 +19,12 @@
         @php
             $user = Auth::user();
         @endphp
+        <!-- Облака -->
+        <div class="cloud cloud-1"></div>
+        <div class="cloud cloud-2"></div>
+        <div class="cloud cloud-3"></div>
+        <div class="cloud cloud-4"></div>
+
         <div id="app">
             <user-home :user="{{ $user }}" />
         </div>

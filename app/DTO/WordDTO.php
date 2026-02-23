@@ -32,7 +32,7 @@ class WordDTO
 
     public function toArray(): array
     {
-        return $this->data;
+        return $this->data['model'];
     }
 
     public function toFillableArray(): array

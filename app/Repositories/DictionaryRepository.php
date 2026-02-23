@@ -17,10 +17,6 @@ class DictionaryRepository
     {
         $relations = ['language_from', 'language_to'];
 
-        if (empty(Arr::get($filters, 'id'))) {
-            return $this->class::with($relations)->get();
-        }
-
         $query = $this->class::query();
         if (!empty(Arr::get($filters, 'id'))) {
             $query = $query->whereIn('id', $filters['id']);
@@ -66,7 +62,6 @@ class DictionaryRepository
     {
         $model = $this->class::find($id);
         $model->words()->delete();
-        $model->translations()->delete();
         return (bool)$model->delete();
     }
 }

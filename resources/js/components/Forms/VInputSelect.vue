@@ -1,31 +1,21 @@
-<script setup>
-    const model = defineModel();
+<script setup lang="ts" generic="T extends Option['id']">
+import type { Option } from '../../types/types.ts';
 
-    defineProps({
-        options: {
-            type: Array,
-            default: [],
-        },
-        label: {
-            type: String,
-        },
-        id: {
-            type: String,
-            required: true,
-        },
-        disabled: {
-            type: Boolean,
-            default: false,
-        },
-    });
+    const model = defineModel<T|null>({ default: null });
 
-    const emit = defineEmits([
-        'input',
-    ]);
+    const { options = [], label, id, disabled = false } = defineProps<{
+        id: string
+        label: string
+        options?: Option<T>[]
+        disabled?: boolean
+    }>();
 
-    function updateCurrentTab(event) {
-        model.value  = event.target.value;
-        emit('input', event.target.value);
+    const emit = defineEmits<{
+        input: [T|null]
+    }>();
+
+    function updateCurrentTab() {
+        emit('input', model.value ?? null);
     };
 </script>
 
@@ -33,14 +23,13 @@
     <div>
         <label v-if="label" :for="id">{{ label }}</label>
         <select
-            :value="model"
+            v-model="model"
             class="w-100 mt-1"
             :disabled="disabled"
             @change="updateCurrentTab"
         >
             <option
-                :key="0"
-                value=""
+                :value="null"
                 selected
             >
                 Выберите...
