@@ -17,6 +17,12 @@
     </head>
     <body>
         <div id="app">
+            <!-- Облака -->
+            <div class="cloud cloud-1"></div>
+            <div class="cloud cloud-2"></div>
+            <div class="cloud cloud-3"></div>
+            <div class="cloud cloud-4"></div>
+
             <user-auth />
         </div>
     </body>
