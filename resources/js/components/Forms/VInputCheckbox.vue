@@ -1,24 +1,18 @@
-<script setup>
-    defineProps({
-        id: {
-            type: String,
-            required: true,
-        },
-        label: {
-            type: String,
-            default: "",
-        },
-    });
+<script setup lang="ts">
+    const { id, label = '' } = defineProps<{
+        id: string
+        label?: string
+    }>();
 
-    const emit = defineEmits([
-        'input',
-    ]);
+    const emit = defineEmits<{
+        input: [boolean]
+    }>();
 
-    const model = defineModel();
+    const model = defineModel<boolean>();
 
-    function update(event) {
-        model.value = event.target.checked;
-        emit('input', event.target.checked);
+    function update(event: Event) {
+        model.value = (event.target as HTMLInputElement).checked;
+        emit('input', model.value);
     };
 </script>
 

@@ -1,20 +1,24 @@
-<script setup>
-    import { toRefs } from 'vue';
+<script setup lang="ts" generic="T extends Option">
+import { toRefs, computed } from 'vue';
+import type { Option } from '../../types/types.ts';
 
-    const props = defineProps({
-        tabs: Array,
-        currentTab: String,
-    });
+const props = defineProps<{
+    tabs: readonly T[],
+    currentTab: T['id'],
+}>();
 
-    const emit = defineEmits([
-        'switch-tab',
-    ]);
+const emit = defineEmits<{
+    (e: 'switch-tab', tab: T['id']): void,
+}>();
 
-    const { tabs } = toRefs(props);
+const { tabs } = toRefs(props);
 
-    function switchTab(tab) {
-        emit('switch-tab', tab);
-    }
+function switchTab(tab: T['id']) {
+    emit('switch-tab', tab);
+}
+
+const currentTabLabel = computed<T['label']|''>((): T['label']|'' => tabs.value.find((item: T) => item.id === props.currentTab)?.label ?? '');
+
 </script>
 
 <template>
@@ -33,7 +37,7 @@
                     {{ tab.label }}
                 </button>
             </menu>
-            <label>{{ tabs.find((item) => item.id === currentTab).label }}</label>
+            <label>{{ currentTabLabel }}</label>
         </div>
         <slot name="content"></slot>
     </section>

@@ -6,7 +6,85 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: linear-gradient(-176deg, #90a7d0 0%, #b8c9e3 45%, #263b0e calc(45% + 5px), #59723b 55%, #79b362 100%);
+    background: linear-gradient(-176deg, #183db3 0%, #3e7ce2 15%, #85bff5 30%, #b1d8f3 45%, #263b0e calc(45% + 5px), #59723b 55%, #79b362 100%);
+}
+
+/* --- Облака --- */
+.cloud {
+    position: absolute;
+    background: #ffffff;
+    border-radius: 50%;
+    filter: blur(20px);
+    opacity: 0.8;
+}
+
+/* Верхнее растянутое облако */
+.cloud-1 {
+    width: 30%; height: 15%;
+    top: 5%; left: 20%;
+    transform: rotate(-5deg);
+    opacity: 0.5;
+    filter: blur(25px);
+}
+/* Кучевые облака справа */
+.cloud-2 {
+    width: 20%; height: 10%;
+    top: 25%; right: 10%;
+    filter: blur(18px);
+    opacity: 0.85;
+}
+.cloud-3 {
+    width: 15%; height: 7%;
+    top: 35%; right: 30%;
+    filter: blur(15px);
+    opacity: 0.7;
+}
+/* Небольшое облачко слева */
+.cloud-4 {
+    width: 5%; height: 4%;
+    top: 15%; left: 5%;
+    filter: blur(12px);
+}
+
+.hill {
+    position: absolute;
+    /* Делаем холм шире экрана, чтобы при вращении не было видно обрезанных углов */
+    left: -10vw;
+    width: 120vw;
+    height: 100vh;
+
+    /* Центрируем верхнюю границу холма ровно по центру экрана (50%) */
+    top: 45%;
+    transform-origin: center top;
+
+    /* 
+        Математически точный наклон:
+        Функция atan2 гарантирует, что перепад высот составит ровно 15vh (15% экрана) 
+        на каждые 100vw ширины, независимо от пропорций монитора.
+    */
+    transform: rotate(-10deg); /* Резервный вариант для старых браузеров */
+    transform: rotate(atan2(15vh, 100vw)); 
+
+    /* Легкий изгиб линии холма (чтобы это был холм, а не прямая бетонная рампа) */
+    border-top-left-radius: 50% 10%;
+    border-top-right-radius: 50% 10%;
+
+    /* Многослойная покраска: от бликов до глубоких теней */
+    background: 
+        /* 1. Яркий солнечный блик на возвышенности (справа) */
+        radial-gradient(ellipse at 85% 0%, #6ab010 0%, rgba(65, 120, 10, 0.3) 45%, transparent 65%),
+        
+        /* 2. Глубокая объемная тень во впадине (слева, где холм ниже) */
+        radial-gradient(ellipse at 20% 30%, rgba(5, 25, 1, 0.7) 0%, transparent 55%),
+        
+        /* 3. Глобальное затемнение к самому подножию */
+        linear-gradient(to bottom, transparent 30%, #031200 100%),
+        
+        /* 4. Базовый градиент: глубокий темный зеленый */
+        linear-gradient(to bottom, #2b6b03 0%, #113601 40%, #051400 100%);
+        
+    /* Внутреннее свечение по самой кромке холма для контраста с небом */
+    box-shadow: inset 0 12px 20px -5px rgba(180, 255, 50, 0.2);
 }
 
 label, input, button {

@@ -1,31 +1,40 @@
-<script setup>
+<script setup lang="ts">
     import VInputSelect from '../Forms/VInputSelect.vue';
     import VInputCheckbox from '../Forms/VInputCheckbox.vue';
-    import { computed, onMounted, onUnmounted, ref } from 'vue';
-    import { storeWord, storeTranslation, destroyWord, destroyTranslation } from '../../api/word.js';
-    import { getButtons, getProcessWords } from '../../api/process.js';
-    import { isMobile } from '../../utils.js';
+    import { computed, onMounted, onUnmounted, Ref, ref } from 'vue';
+    import { storeWord, storeTranslation, destroyWord, destroyTranslation } from '../../api/word.ts';
+    import { getButtons, getProcessWords } from '../../api/process.ts';
+    import { isMobile } from '../../utils.ts';
+    import type { Option, OptionValue, Button, Word } from '../../types/types.ts';
 
-    const props = defineProps({
-        dictionaryOptions: {
-            type: Array,
-            required: false,
-            default: () => [],
-        },
-    });
+    type Mode = 'stopped' | 'started';
 
-    const isMobileAgent = isMobile();
+    const emptyWord = {
+        id: 0,
+        word: '',
+        letter: '',
+        dictionary_id: 0,
+        show_at: '',
+        translations: [],
+        translation_text: '',
+    };
 
-    const mode = ref('stopped');
-    const buttonValues = ref([]);
-    const buttonCodes = ref([]);
-    const currentDictionaryId = ref(null);
-    const reverseDictionary = ref(false);
+    const { dictionaryOptions } = defineProps<{
+        dictionaryOptions: Option[]
+    }>();
 
-    const words = ref([]);
-    const currentWord = ref({});
-    const currentWordClosed = ref(true);
-    const currentIndex = ref(null);
+    const isMobileAgent: boolean = isMobile();
+
+    const mode: Ref<Mode> = ref('stopped');
+    const buttonValues: Ref<Button[]> = ref([]);
+    const buttonCodes: Ref<Button['value'][]> = ref([]);
+    const currentDictionaryId: Ref<OptionValue> = ref(null);
+    const reverseDictionary: Ref<boolean> = ref(false);
+
+    const words: Ref<Word[]> = ref([]);
+    const currentWord: Ref<Word> = ref(emptyWord);
+    const currentWordClosed: Ref<boolean> = ref(true);
+    const currentIndex: Ref<number|null> = ref(null);
 
     const message = 'Словарь пуст';
 
@@ -44,11 +53,11 @@
         return words.value.length === 0;
     });
 
-    function getRandomIndex(max) {
+    function getRandomIndex(max: number) {
         return Math.floor(Math.random() * max);
     };
 
-    function buttonHandler(event) {
+    function buttonHandler(event: KeyboardEvent) {
         const codeIndex = Number.parseInt(event.key) - 2;
         if (event.code === 'Space') {
             open();
@@ -88,15 +97,15 @@
         currentWord.value = { ...words.value[currentIndex.value] };
     };
 
-    function end(msg) {
+    function end(msg: string) {
         mode.value = 'stopped';
         deleteButtonHandler();
         currentIndex.value = null;
-        currentWord.value = {};
+        currentWord.value = emptyWord;
         words.value = [];
     };
 
-    function open(event) {
+    function open() {
         currentWordClosed.value = false;
     };
 
@@ -105,20 +114,20 @@
         words.value = response.data;
     };
 
-    async function setCurrentDictionary(id) {
-        currentDictionaryId.value = props.dictionaryOptions.find((item) => item.id === Number(id))?.id;
+    async function setCurrentDictionary(id: OptionValue) {
+        currentDictionaryId.value = dictionaryOptions.find((item: Option): boolean => item.id === Number(id))?.id ?? null;
         if (currentDictionaryId.value) {
-            getWordOptions(currentDictionaryId.value);
+            getWordOptions();
         }
     };
 
     async function updateReverse() {
         if (currentDictionaryId.value) {
-            getWordOptions(currentDictionaryId.value);
+            getWordOptions();
         }
     }
 
-    async function saveWord(button) {
+    async function saveWord(button: Button['value']) {
         const response = reverseDictionary.value
             ? await storeTranslation(currentWord.value, button)
             : await storeWord(currentWord.value, button);

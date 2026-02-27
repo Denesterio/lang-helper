@@ -1,17 +1,20 @@
-<script setup>
+<script setup lang="ts">
     import AuthTab from './Tabs/TabAuth.vue';
     import TabsSection from './Tabs/TabsSection.vue';
     import RegisterTab from './Tabs/TabRegister.vue';
     import TheTitleBar from './TheTitleBar.vue';
-    import { ref } from 'vue';
+    import { ref, Ref } from 'vue';
+    import type { Option } from '../types/types.ts';
 
     const tabs = [
         { id: 'auth', label: 'Авторизация' },
         { id: 'register', label: 'Регистрация' },
-    ];
-    const currentTab = ref('auth');
+    ] as const satisfies readonly Option[];
+    type TabId = typeof tabs[number]['id'];
 
-    function switchTab(tab) {
+    const currentTab: Ref<TabId> = ref('auth');
+
+    function switchTab(tab: TabId): void {
         currentTab.value = tab;
     };
 </script>

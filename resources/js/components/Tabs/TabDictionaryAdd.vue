@@ -1,37 +1,44 @@
-<script setup>
+<script setup lang="ts">
     import VInputText from '../Forms/VInputText.vue';
     import VInputSelect from '../Forms/VInputSelect.vue';
-    import { ref, onMounted } from 'vue';
-    import { storeDictionary, destroyDictionary  } from '../../api/dictionary.js';
-    import { getLanguages } from '../../api/language.js';
+    import { ref, onMounted, computed } from 'vue';
+    import type { Ref } from 'vue';
+    import { storeDictionary, destroyDictionary  } from '../../api/dictionary';
+    import { getLanguages } from '../../api/language';
+    import type { Dictionary, ModelOption, Language, DictionaryTemplate } from '@/types/types';
 
-    defineProps({
-        dictionaryOptions: {
-            type: Array,
-            required: false,
-            default: () => [],
-        },
-        dictionaries: {
-            type: Array,
-            required: false,
-            default: () => [],
-        },
-    });
+    const props = defineProps<{
+        dictionaryOptions: ModelOption[]
+        dictionaries: Dictionary[]
+    }>();
 
     const emit = defineEmits(['update-dictionary']);
 
-    const dictionaryDefault = {
+    const dictionaryDefault: DictionaryTemplate = {
+        id: null,
         name: null,
         language_1_id: null,
         language_2_id: null,
     };
-    const languageOptions = ref([]);
-    const languages = ref([]);
-    const currentDictionaryId = ref(null);
-    const currentDictionary = ref({ ...dictionaryDefault });
+    const languageOptions: Ref<ModelOption[]> = ref([]);
+    const languages: Ref<Language[]> = ref([]);
+    const currentDictionaryId: Ref<Dictionary['id']|null> = ref(null);
+    const currentDictionary: Ref<Dictionary|DictionaryTemplate> = ref({ ...dictionaryDefault });
 
     onMounted(() => {
         getLanguageOptions();
+    });
+
+    const addButtonDisabled = computed<boolean>(() => {
+        return currentDictionary.value.name === null
+            || currentDictionary.value.language_1_id === null
+            || currentDictionary.value.language_2_id === null;
+    });
+
+    const inputNameLabel = computed(() => {
+        return currentDictionaryId.value
+            ? 'Переименовать словарь'
+            : 'Добавить словарь';
     });
 
     async function getLanguageOptions() {
@@ -50,6 +57,8 @@
     };
 
     async function deleteDictionary() {
+        if (currentDictionaryId.value === null) return;
+
         const response = await destroyDictionary(currentDictionaryId.value);
         if (response.data.success) {
             currentDictionary.value = { ...dictionaryDefault };
@@ -58,8 +67,8 @@
         }
     }
 
-    function setCurrentDictionary(id) {
-        currentDictionary.value = props.dictionaries.find((item) => item.id === Number(id)) ?? {};
+    function setCurrentDictionary(id: Dictionary['id']|null) {
+        currentDictionary.value = props.dictionaries.find((item) => item.id === Number(id)) ?? { ...dictionaryDefault };
     };
 </script>
 
@@ -76,7 +85,7 @@
         <v-input-text
             v-model="currentDictionary.name"
             id="dictionary_name"
-            label="Добавить словарь"
+            :label="inputNameLabel"
             class="mb-2"
         />
         <v-input-select
@@ -97,6 +106,7 @@
         />
         <button
             v-if="!currentDictionary?.id"
+            :disabled="addButtonDisabled"
             @click.prevent="saveDictionary"
         >
             Добавить

@@ -1,36 +1,26 @@
-<script setup>
-    import { ref } from 'vue';
+<script setup lang="ts">
+    import { Ref, ref } from 'vue';
 
-    defineProps({
-        id: {
-            type: String,
-            required: true,
-        },
-        label: {
-            type: String,
-            default: "",
-        },
-        type: {
-            type: String,
-            default: "text",
-        },
-        readonly: {
-            type: Boolean,
-            default: false,
-        },
-    });
+    const { id, label = '', type = 'text', readonly = false } = defineProps<{
+        id: string
+        label?: string
+        type?: string
+        readonly?: boolean
+    }>();
 
-    const emit = defineEmits(['input']);
+    const emit = defineEmits<{
+        input: [value: string]
+    }>();
 
-    const inputRef = ref(null);
+    const inputRef: Ref<HTMLInputElement | null> = ref(null);
 
     defineExpose({ inputRef });
 
-    const model = defineModel();
+    const model = defineModel<string|null>();
 
-    function update(event) {
-        model.value = event.target.value;
-        emit('input', event.target.value);
+    function update(event: Event) {
+        model.value = (event.target as HTMLInputElement).value;
+        emit('input', (event.target as HTMLInputElement).value);
     }
 </script>
 
@@ -40,3 +30,4 @@
         <input ref="inputRef" :value="model" :id="id" :type="type" :readonly="readonly" @input="update" />
     </div>
 </template>
+

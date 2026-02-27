@@ -1,4 +1,4 @@
-export default (langFrom, langTo) => {
+export default (langFrom: string, langTo: string) => {
     const russian = [
         'й',
         'ц',
@@ -73,18 +73,18 @@ export default (langFrom, langTo) => {
         '?',
     ];
     
-    const obj = {
+    const obj: Record<string, string[]> = {
         russian,
         english,
     };
 
-    const replacer = Object.fromEntries(obj[langFrom].reduce((acc, current, index) => {
+    const replacer = Object.fromEntries(obj[langFrom].reduce((acc: string[][], current: string, index: number) => {
         acc.push([current, obj[langTo][index]]);
         return acc;
     }, []));
 
-    return (str, symbol, index) => {
-        if (!symbol) {
+    return (str: string, symbol: string|null = null, index?: number): string => {
+        if (symbol === null || index === undefined) {
             return str;
         }
 
@@ -92,6 +92,6 @@ export default (langFrom, langTo) => {
             symbol.toLowerCase() === symbol
                 ? replacer[symbol] || symbol
                 : replacer[symbol.toLowerCase()]?.toUpperCase() || symbol;
-        return str.substr(0, index) + newSymbol + str.substr(index + 1);
+        return str.substring(0, index) + newSymbol + str.substring(index + 1);
       };
 }
